@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<head>
+    <meta charset=utf-8>
+    <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/github_like.css">
+    <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/colors.css">
+</head>
+<h1>Appels systèmes et flux</h1>
+<h2>Appels systèmes</h2>
+<h3>Explications</h3>
+<p>Lors de son lancement, un programme est lu puis exécuté par le processeur. Supposons que ce soit une méthode qui n'affiche rien: alors rien n'est écrit à la fin du programme. Pas très utile. On va alors dire au programme de sauvegarder ses informations dans la mémoire, ou sur un terminal, pour ne pas l'avoir lancé en vain.</p>
+<p>Mais comment faire pour <strong>lire ou écrire un fichier sauvegardé sur un disque dur</strong>, alors que le programme est chargé en mémoire vive ? On <strong>passe par le système d'exploitation, l'OS</strong>, en faisant un <strong>appel système</strong>. Il y a deux méthodes:</p>
+<ul>
+<li>Faire des <strong>appels systèmes directement</strong>, comme des gros cochons: cependant, cela ne <strong>marche que sous UNIX</strong>, et est très <strong>peu performant</strong> si mal fait;</li>
+<li>Utiliser <strong><code>libc</code></strong>: ensemble de fonctions standard pour le <code>C</code>, codées pour tout <strong>type de système d'exploitation</strong>, et qui contrôlent ce que fait l'utilisateur pour <strong>effectuer au mieux les appels systèmes</strong>.</li>
+</ul>
+<p>Il est clair que la deuxième option est préférable. Donc nous allons faire les deux. Il faut savoir qu'un appel système fait passer le programme en un 'mode' spécial pour effectuer sa tâche, ce qui stoppe le programme le temps de l'exécution de cet appel: il faut donc les utiliser à bon escient.</p>
+<h3>Utilisation générale</h3>
+<p>Le cours donne un exemple d'<strong>appel système classique, non <code>libc</code></strong>:</p>
+<pre lang=c><code><span class="highlight"><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;	//pour strerror
+#include &lt;errno.h&gt;	//pour errno
+</span>
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span> <span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">unAppelSysteme</span> <span class="p">(...)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fprintf</span> <span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"%s:unAppelSysteme a planté: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
+	<span class="k">return</span> <span class="mi">1</span> <span class="p">;</span>		<span class="c1">// ou exit(1)
+</span>    <span class="p">}</span>
+    <span class="p">...</span>
+    <span class="k">return</span> <span class="mi">0</span> <span class="p">;</span>
+<span class="p">}</span>
+</span></code></pre>
+<p>Que faut il en retenir ?</p>
+<ul>
+<li>Les appels systèmes <strong>non libc</strong> renvoient des entiers. Plus particulièrement, <strong>les appels systèmes classiques renvoient <code>-1</code> en cas d'erreur</strong>, pratique pour tester si il y a eu une erreur en route.</li>
+<li><strong>Il existe deux librairies <code>errno.h</code> et <code>string.h</code> qui s'utilisent avec les appels systèmes</strong>. Lors d'un plantage, <code>errno</code> est mis à jour; <strong><code>strerror(errno)</code> renvoie une <code>string</code> avec un message d'erreur qui correspond au problème</strong>.</li>
+</ul>
+<h2>Les flux: qu'est-ce ?</h2>
+<p><strong>Les flux sont les entrées/sorties d'un programme</strong>. Ce sont des fichiers que le programme peut lire ou écrire, via le <code>kernel</code>. Comme sous UNIX, tout est un fichier, on peut ainsi écrire dans diverses choses: fichiers textes, terminaux, CD/DVD .. Il suffit de savoir quel fichier ouvrir. <strong>Chaque lecture ou écriture fait un appel système</strong>.</p>
+<h3>Ouverture de flux avec des appels systèmes</h3>
+<p>Avec les appels systèmes classiques, <strong>un <code>int</code> nommé <code>fd</code> représente un flux</strong>. Les fonctions à savoir utiliser sont:</p>
+<pre lang=c><code><span class="highlight"><span class="c1">// Ouvrir un flux, renvoie un fd correspondant:
+</span><span class="kt">int</span> <span class="n">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
+
+<span class="c1">// Fermer le flux croorespondant à fd:
+</span><span class="kt">int</span> <span class="n">close</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">);</span>
+
+<span class="c1">// Ecrire dans le flux:
+</span><span class="kt">ssize_t</span> <span class="n">write</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
+
+<span class="c1">// Lire dans le flux:
+</span><span class="kt">ssize_t</span> <span class="n">read</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
+
+<span class="c1">// Se déplacer dans le flux:
+</span><span class="kt">off_t</span> <span class="n">lseek</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span>
+
+<span class="c1">// Copier des flux:
+</span><span class="kt">int</span> <span class="n">dup</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">dup2</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">newfd</span><span class="p">);</span>
+</span></code></pre>
+<p>Toutes ces fontions se trouvent dans <code>&lt;unistd.h&gt;</code>.</p>
+<h2><code>open</code></h2>
+<blockquote>
+<p><code>int open(const char *pathname, int flags)</code></p>
+</blockquote>
+<h5>Fonction</h5>
+<ul>
+<li>Ouvre un flux vers le fichier passé en argument.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>const char *pathname</code>: Le nom du fichier;</li>
+<li><code>int flags</code>: un entier spécial défini dans un <code>enum</code>, pouvant être:
+<ul>
+<li><code>O_RDONLY</code>: lecture seule;</li>
+<li><code>O_WRONLY</code>: lecture seule;</li>
+<li><code>O_RDWR</code>: lecture et écriture;</li>
+<li><code>O_TRUNC</code>: effacement avant écriture;</li>
+<li><code>O_CREAT</code>: création si non-existent;</li>
+<li><code>O_APPEND</code>: écriture en fin de fichier.</li>
+</ul>
+</li>
+</ul>
+<h4>Retour</h4>
+<ul>
+<li>Un entier <code>fd</code> correspondant au flux créé, <code>-1</code> sinon.</li>
+</ul>
+<h2><code>close</code></h2>
+<blockquote>
+<p><code>int close(int fd)</code></p>
+</blockquote>
+<h5>Fonction</h5>
+<ul>
+<li>Ferme un flux passé en argument.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>int fd</code>: l'entier correspondant au flux.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li>Un entier correspondant au statut, <code>-1</code> si une erreur s'est produite.</li>
+</ul>
+<h2><code>write</code></h2>
+<blockquote>
+<p><code>ssize_t write(int fd, const void *buf, size_t count)</code></p>
+</blockquote>
+<h5>Fonction</h5>
+<ul>
+<li>Écrit dans un flux passé en argument.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>int fd</code>: l'entier correspondant au flux;</li>
+<li><code>const void *buf</code>: un pointeur vers la mémoire à écrire dans le fichier;</li>
+<li><code>size_t count</code>: la taille de la mémoire à écrire.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li>Un entier correspondant au nombre de bytes écrits, <code>-1</code> si une erreur s'est produite.</li>
+</ul>
+<h2><code>read</code></h2>
+<blockquote>
+<p><code>ssize_t read(int fd, void *buf, size_t count)</code></p>
+</blockquote>
+<h5>Fonction</h5>
+<ul>
+<li>Lit dans le flux correpondant à <code>fd</code> <code>count</code> bytes, et les stocke dans <code>buf</code>.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>int fd</code>: le descripteur de flux;</li>
+<li><code>void *buf</code>: un pointeur vers la zone mémoire où stocker les infos lues;</li>
+<li><code>size_t count</code>: la taille de la mémoire à lire.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li>Un entier correspondant à la taille de la mémoire lue, et <code>-1</code> si une erreur s'est produite.</li>
+</ul>
+<h2><code>lseek</code></h2>
+<blockquote>
+<p><code>off_t lseek(int fd, off_t offset, int whence)</code></p>
+</blockquote>
+<h5>Fonction</h5>
+<ul>
+<li>Repositionne dans le flux correpondant à <code>fd</code> de <code>offset</code> par rapport à <code>whence</code>: si <code>whence</code> est <code>SEEK_END</code> et <code>offset</code> est <code>0</code>, il va à <code>0</code> <code>bytes</code> de la fin.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>int fd</code>: le descripteur de flux;</li>
+<li><code>off_t offset</code>: Le décalage depuis <code>whence</code>;</li>
+<li><code>int whence</code>: un entier spécial défini dans un <code>enum</code>, pouvant être:
+<ul>
+<li><code>SEEK_SET</code>: Depuis le début;</li>
+<li><code>SEEK_CUR</code>: Depuis la position du curseur;</li>
+<li><code>SEEK_END</code>: Depuis la fin.</li>
+</ul>
+</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li>Un entier correspondant à la position du curseur dans le fichier, et <code>-1</code> si une erreur s'est produite.</li>
+</ul>
+<h2><code>dup</code> et <code>dup2</code></h2>
+<blockquote>
+<p><code>int dup(int oldfd)</code></p>
+</blockquote>
+<blockquote>
+<p><code>int dup2(int oldfd, int newfd)</code></p>
+</blockquote>
+<h5>Fonction</h5>
+<ul>
+<li>Copie les flux. <code>dup</code> crée un nouveau <code>fd</code> qui pointe vers le même flux que <code>oldfd</code>, alors que <code>dup2</code> ferme <code>newfd</code> et le fait pointer vers le même flux que <code>oldfd</code>.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>int oldfd</code>: le descripteur de flux à copier;</li>
+<li><code>int newfd</code>: le flux à écraser et faire pointer vers <code>oldfd</code>.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li>Un entier correspondant au <code>fd</code> créé, et <code>-1</code> si une erreur s'est produite.</li>
+</ul>

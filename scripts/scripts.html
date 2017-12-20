@@ -2,8 +2,6 @@
 <head>
     <meta charset=utf-8>
     <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/github_like.css">
-    <link rel="shortcut icon" href="http://skutnik.iiens.net/icon" type="image/x-icon">
-    <title>spoutnik.com</title>
 </head>
 <p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
 <h1>Scripts en bash</h1>
@@ -13,3 +11,41 @@
 <li>On utilise <code>bash</code>: <code>bash [fichier]</code> qui va dire au programme <code>bash</code> d'exécuter <code>[fichier]</code></li>
 <li>On ajoute <code>#!/bin/bash</code> en première ligne du fichier; puis on effectue <code>chmod +x [fichier]</code> et enfin <code>./[fichier]</code>. Ça a pour effet de dire au terminal d'utiliser <code>bash</code> pour lire le fichier. C'est préférable à l'option précédente.</li>
 </ul>
+<pre><code>#!/bin/bash
+
+if ! [ $(which ruby) ] ; then
+    echo You do not have ruby installed !
+    exit 1
+fi
+
+function check_for_gem() {
+    gem=$(gem list | grep $1)
+
+    echo &quot;$1: $gem&quot;
+    if [ &quot;$gem&quot; != &quot;&quot; ] ; then
+	echo &quot;Gem $1 has been found&quot;
+    else
+	echo -n &quot;The gem $1 is not installed. Install ? [Y/n] &quot;
+	read answer
+
+	if ! [ $answer == &quot;n&quot; ] ; then
+	    gem install $1
+	else
+	    exit 1
+	fi
+    fi
+}
+
+check_for_gem commonmarker
+check_for_gem github-markup
+
+mkdir -p &quot;$HOME&quot;/.local/bin
+cp ./mdtoml &quot;$HOME&quot;/.local/bin
+chmod +x &quot;$HOME&quot;/.local/bin/mdtoml
+
+echo
+echo &quot;mdtoml has been copied to /home/&quot;$USER&quot;/.local/bin/mdtoml&quot;
+echo &quot;You may need to update your PATH. See:&quot;
+echo &quot;https://wiki.archlinux.org/index.php/environment_variables&quot;
+echo
+</code></pre>
