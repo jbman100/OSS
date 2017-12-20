@@ -1,3 +1,5 @@
+<a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a>
+
 ## `open`
 
 > `int open(const char *pathname, int flags)`

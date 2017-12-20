@@ -1,3 +1,5 @@
+<a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a>
+
 # Appels systèmes et flux
 
 ## Appels systèmes
