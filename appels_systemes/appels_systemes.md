@@ -44,7 +44,7 @@ Que faut il en retenir ?
 
 __Les flux sont les entrées/sorties d'un programme__. Ce sont des fichiers que le programme peut lire ou écrire, via le `kernel`. Comme sous UNIX, tout est un fichier, on peut ainsi écrire dans diverses choses: fichiers textes, terminaux, CD/DVD .. Il suffit de savoir quel fichier ouvrir. __Chaque lecture ou écriture fait un appel système__.
 
-### Ouverture de flux avec des appels systèmes
+### Utilisation des appels systèmes
 
 Avec les appels systèmes classiques, __un `int` nommé ` fd` représente un flux__. Les fonctions à savoir utiliser sont:
 
@@ -69,4 +69,15 @@ int dup(int oldfd);
 int dup2(int oldfd, int newfd);
 ```
 
-Toutes ces fontions se trouvent dans `<unistd.h>`. Pour plus de détails, voir <a href="fonctions.html">cette page</a>.
+Toutes ces fontions se trouvent dans `<unistd.h>`. Pour plus de détails sur ces fonctions, voir <a href="http://skutnik.iiens.net/cours/OSS/appels_systemes/fonctions.html">cette page</a>.
+
+__L'utiliisation de flux classiques utilise ses propres concepts__:
+
+- On peut mettre plusieurs options dans `open` en les séparant par des `|`: pour ouvrir un fichier en lecture seule, on peut mettre `O_RDONLY|O_CREATE`;
+- On ne peut lire un fichier ouvert avec l'option `O_RDONLY` ou écrire dan un fichier ouvert avec l'option `O_WRONLY`.
+- À un flux est associé un __curseur qui est décalé à chaque lecture ou écriture__: effectuer 3 fois `read(fd, &sortie, 10*sizeof(char))` va mettre dans `sortie` 10 `char` au premier appel, puis les 10 `char` suivant au second, et enfin les 10 `char` qui les suivent au troisième.
+- Pour repositionner ce curseur, on utilise `lseek`: suivant `whence`, le curseur est décalé à `offset` de:
+    - La fin si on donne `SEEK_END` à whence;
+    - Le début si on donne `SEEK_SET`;
+    - La position du curseur si on donne `SEEK_CUR`.
+- `lseek` renvoie le nombre de bytes qui ont été sautés. __Donc pour calculer la taille d'un fichier, on effectue `int size = lseek(fd, 0, SEEK_END)`__, qui bouge le curseur à `0` bytes de la fin, et qui donne le nombre de bytes qui ont été passés depuis la position précédente. Il faut pour avoir la taille entère que le curseur soit au début du fichier.

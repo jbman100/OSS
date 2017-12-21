@@ -40,7 +40,7 @@
 </ul>
 <h2>Les flux: qu'est-ce ?</h2>
 <p><strong>Les flux sont les entrées/sorties d'un programme</strong>. Ce sont des fichiers que le programme peut lire ou écrire, via le <code>kernel</code>. Comme sous UNIX, tout est un fichier, on peut ainsi écrire dans diverses choses: fichiers textes, terminaux, CD/DVD .. Il suffit de savoir quel fichier ouvrir. <strong>Chaque lecture ou écriture fait un appel système</strong>.</p>
-<h3>Ouverture de flux avec des appels systèmes</h3>
+<h3>Utilisation des appels systèmes</h3>
 <p>Avec les appels systèmes classiques, <strong>un <code>int</code> nommé <code>fd</code> représente un flux</strong>. Les fonctions à savoir utiliser sont:</p>
 <pre lang=c><code><span class="highlight"><span class="c1">// Ouvrir un flux, renvoie un fd correspondant:
 </span><span class="kt">int</span> <span class="n">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
@@ -61,4 +61,18 @@
 </span><span class="kt">int</span> <span class="n">dup</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">);</span>
 <span class="kt">int</span> <span class="n">dup2</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">newfd</span><span class="p">);</span>
 </span></code></pre>
-<p>Toutes ces fontions se trouvent dans <code>&lt;unistd.h&gt;</code>. Pour plus de détails, voir <a href="fonctions.html">cette page</a>.</p>
+<p>Toutes ces fontions se trouvent dans <code>&lt;unistd.h&gt;</code>. Pour plus de détails sur ces fonctions, voir <a href="http://skutnik.iiens.net/cours/OSS/appels_systemes/fonctions.html">cette page</a>.</p>
+<p><strong>L'utiliisation de flux classiques utilise ses propres concepts</strong>:</p>
+<ul>
+<li>On peut mettre plusieurs options dans <code>open</code> en les séparant par des <code>|</code>: pour ouvrir un fichier en lecture seule, on peut mettre <code>O_RDONLY|O_CREATE</code>;</li>
+<li>On ne peut lire un fichier ouvert avec l'option <code>O_RDONLY</code> ou écrire dan un fichier ouvert avec l'option <code>O_WRONLY</code>.</li>
+<li>À un flux est associé un <strong>curseur qui est décalé à chaque lecture ou écriture</strong>: effectuer 3 fois <code>read(fd, &amp;sortie, 10*sizeof(char))</code> va mettre dans <code>sortie</code> 10 <code>char</code> au premier appel, puis les 10 <code>char</code> suivant au second, et enfin les 10 <code>char</code> qui les suivent au troisième.</li>
+<li>Pour repositionner ce curseur, on utilise <code>lseek</code>: suivant <code>whence</code>, le curseur est décalé à <code>offset</code> de:
+<ul>
+<li>La fin si on donne <code>SEEK_END</code> à whence;</li>
+<li>Le début si on donne <code>SEEK_SET</code>;</li>
+<li>La position du curseur si on donne <code>SEEK_CUR</code>.</li>
+</ul>
+</li>
+<li><code>lseek</code> renvoie le nombre de bytes qui ont été sautés. <strong>Donc pour calculer la taille d'un fichier, on effectue <code>int size = lseek(fd, 0, SEEK_END)</code></strong>, qui bouge le curseur à <code>0</code> bytes de la fin, et qui donne le nombre de bytes qui ont été passés depuis la position précédente. Il faut pour avoir la taille entère que le curseur soit au début du fichier.</li>
+</ul>
