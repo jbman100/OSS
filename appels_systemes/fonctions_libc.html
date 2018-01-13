@@ -7,49 +7,52 @@
     <title>spoutnik.com</title>
 </head>
 <p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
-<h2><code>open</code></h2>
-<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
-</span></code></pre>
+<h2><code>fopen</code></h2>
+<blockquote>
+<p><code>FILE *fopen(const char *pathname, const char *mode)</code></p>
+</blockquote>
 <h5>Fonction</h5>
 <ul>
-<li>Ouvre un flux vers le fichier passé en argument.</li>
+<li>Ouvre un flux vers le fichier passé en argument. Les modes <code>w</code>, <code>w+</code>, <code>a</code> et <code>a+</code> créent le fichier s'il n'existe pas.</li>
 </ul>
 <h5>Arguments</h5>
 <ul>
 <li><code>const char *pathname</code>: Le nom du fichier;</li>
-<li><code>int flags</code>: un entier spécial défini dans un <code>enum</code>, pouvant être:
+<li><code>const char *mode</code>: Une string pouvant être:
 <ul>
-<li><code>O_RDONLY</code>: lecture seule;</li>
-<li><code>O_WRONLY</code>: écriture seule;</li>
-<li><code>O_RDWR</code>: lecture et écriture;</li>
-<li><code>O_TRUNC</code>: effacement avant écriture;</li>
-<li><code>O_CREAT</code>: création si non-existent;</li>
-<li><code>O_APPEND</code>: écriture en fin de fichier.</li>
+<li><code>r</code>: lecture seule;</li>
+<li><code>r+</code>: lecture et écriture, depuis le début;</li>
+<li><code>w</code>: écriture seule, le fichier est effacé;</li>
+<li><code>w+</code>: lecture et écriture, après effacement;</li>
+<li><code>a</code>: écriture en fin de fichier;</li>
+<li><code>a+</code>: lecture et écriture en fin de fichier.</li>
 </ul>
 </li>
 </ul>
 <h4>Retour</h4>
 <ul>
-<li>Un entier <code>fd</code> correspondant au flux créé, <code>-1</code> sinon.</li>
+<li>Un pointeur vers un objet <code>FILE</code> correspondant au flux créé, <code>NULL</code> sinon.</li>
 </ul>
-<h2><code>close</code></h2>
-<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">close</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">);</span>
-</span></code></pre>
+<h2><code>fclose</code></h2>
+<blockquote>
+<p><code>int fclose(FILE *stream)</code></p>
+</blockquote>
 <h5>Fonction</h5>
 <ul>
 <li>Ferme un flux passé en argument.</li>
 </ul>
 <h5>Arguments</h5>
 <ul>
-<li><code>int fd</code>: l'entier correspondant au flux.</li>
+<li><code>FILE *stream</code>: pointeur vers le dexcripteur de flux à fermer.</li>
 </ul>
 <h5>Retour</h5>
 <ul>
-<li>Un entier correspondant au statut, <code>-1</code> si une erreur s'est produite.</li>
+<li>Un entier correspondant au statut, <code>0</code> si aucune erreur ne s'est produite. Dans le cas contraire, <code>errno</code> est mis à jour.</li>
 </ul>
-<h2><code>write</code></h2>
-<pre lang=c><code><span class="highlight"><span class="kt">ssize_t</span> <span class="n">write</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
-</span></code></pre>
+<h2><code>fwrite</code></h2>
+<blockquote>
+<p><code>ssize_t write(int fd, const void *buf, size_t count)</code></p>
+</blockquote>
 <h5>Fonction</h5>
 <ul>
 <li>Écrit dans un flux passé en argument.</li>
@@ -64,9 +67,10 @@
 <ul>
 <li>Un entier correspondant au nombre de bytes écrits, <code>-1</code> si une erreur s'est produite.</li>
 </ul>
-<h2><code>read</code></h2>
-<pre lang=c><code><span class="highlight"><span class="kt">ssize_t</span> <span class="n">read</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
-</span></code></pre>
+<h2><code>fread</code></h2>
+<blockquote>
+<p><code>ssize_t read(int fd, void *buf, size_t count)</code></p>
+</blockquote>
 <h5>Fonction</h5>
 <ul>
 <li>Lit dans le flux correpondant à <code>fd</code> <code>count</code> bytes, et les stocke dans <code>buf</code>.</li>
@@ -81,9 +85,10 @@
 <ul>
 <li>Un entier correspondant à la taille de la mémoire lue, et <code>-1</code> si une erreur s'est produite.</li>
 </ul>
-<h2><code>lseek</code></h2>
-<pre lang=c><code><span class="highlight"><span class="kt">off_t</span> <span class="n">lseek</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span>
-</span></code></pre>
+<h2><code>fseek</code></h2>
+<blockquote>
+<p><code>off_t lseek(int fd, off_t offset, int whence)</code></p>
+</blockquote>
 <h5>Fonction</h5>
 <ul>
 <li>Repositionne dans le flux correpondant à <code>fd</code> de <code>offset</code> par rapport à <code>whence</code>: si <code>whence</code> est <code>SEEK_END</code> et <code>offset</code> est <code>0</code>, il va à <code>0</code> <code>bytes</code> de la fin.</li>
@@ -105,10 +110,12 @@
 <li>Un entier correspondant à la position du curseur dans le fichier, et <code>-1</code> si une erreur s'est produite.</li>
 </ul>
 <h2><code>dup</code> et <code>dup2</code></h2>
-<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">dup</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">)</span>
-</span></code></pre>
-<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">dup2</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">newfd</span><span class="p">);</span>
-</span></code></pre>
+<blockquote>
+<p><code>int dup(int oldfd)</code></p>
+</blockquote>
+<blockquote>
+<p><code>int dup2(int oldfd, int newfd)</code></p>
+</blockquote>
 <h5>Fonction</h5>
 <ul>
 <li>Copie les flux. <code>dup</code> crée un nouveau <code>fd</code> qui pointe vers le même flux que <code>oldfd</code>, alors que <code>dup2</code> ferme <code>newfd</code> et le fait pointer vers le même flux que <code>oldfd</code>.</li>

@@ -2,7 +2,9 @@
 
 ## `open`
 
-> `int open(const char *pathname, int flags)`
+```c
+int open(const char *pathname, int flags);
+```
 
 ##### Fonction
 - Ouvre un flux vers le fichier passé en argument.
@@ -11,7 +13,7 @@
 - `const char *pathname`: Le nom du fichier;
 - `int flags`: un entier spécial défini dans un `enum`, pouvant être:
     - `O_RDONLY`: lecture seule;
-    - `O_WRONLY`: lecture seule;
+    - `O_WRONLY`: écriture seule;
     - `O_RDWR`: lecture et écriture;
     - `O_TRUNC`: effacement avant écriture;
     - `O_CREAT`: création si non-existent;
@@ -22,7 +24,9 @@
 
 ## `close`
 
-> `int close(int fd)`
+```c
+int close(int fd);
+```
 
 ##### Fonction
 - Ferme un flux passé en argument.
@@ -35,7 +39,9 @@
 
 ## `write`
 
-> `ssize_t write(int fd, const void *buf, size_t count)`
+```c
+ssize_t write(int fd, const void *buf, size_t count);
+```
 
 ##### Fonction
 - Écrit dans un flux passé en argument.
@@ -50,7 +56,9 @@
 
 ## `read`
 
-> `ssize_t read(int fd, void *buf, size_t count)`
+```c
+ssize_t read(int fd, void *buf, size_t count);
+```
 
 ##### Fonction
 - Lit dans le flux correpondant à `fd` `count` bytes, et les stocke dans `buf`.
@@ -65,7 +73,9 @@
 
 ## `lseek`
 
-> `off_t lseek(int fd, off_t offset, int whence)`
+```c
+off_t lseek(int fd, off_t offset, int whence);
+```
 
 ##### Fonction
 - Repositionne dans le flux correpondant à `fd` de `offset` par rapport à `whence`: si `whence` est `SEEK_END` et `offset` est `0`, il va à `0` `bytes` de la fin.
@@ -83,9 +93,13 @@
 
 ## `dup` et `dup2`
 
-> `int dup(int oldfd)`
+```c
+int dup(int oldfd)
+```
 
-> `int dup2(int oldfd, int newfd)`
+```c
+int dup2(int oldfd, int newfd);
+```
 
 ##### Fonction
 - Copie les flux. `dup` crée un nouveau `fd` qui pointe vers le même flux que `oldfd`, alors que `dup2` ferme `newfd` et le fait pointer vers le même flux que `oldfd`.

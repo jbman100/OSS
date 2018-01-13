@@ -2,36 +2,36 @@
 
 ## `fopen`
 
-> `int open(const char *pathname, int flags)`
+> `FILE *fopen(const char *pathname, const char *mode)`
 
 ##### Fonction
-- Ouvre un flux vers le fichier passé en argument.
+- Ouvre un flux vers le fichier passé en argument. Les modes `w`, `w+`, `a` et `a+` créent le fichier s'il n'existe pas.
 
 ##### Arguments
 - `const char *pathname`: Le nom du fichier;
-- `int flags`: un entier spécial défini dans un `enum`, pouvant être:
-    - `O_RDONLY`: lecture seule;
-    - `O_WRONLY`: lecture seule;
-    - `O_RDWR`: lecture et écriture;
-    - `O_TRUNC`: effacement avant écriture;
-    - `O_CREAT`: création si non-existent;
-    - `O_APPEND`: écriture en fin de fichier.
+- `const char *mode`: Une string pouvant être:
+    - `r`: lecture seule;
+    - `r+`: lecture et écriture, depuis le début;
+    - `w`: écriture seule, le fichier est effacé;
+    - `w+`: lecture et écriture, après effacement;
+    - `a`: écriture en fin de fichier;
+    - `a+`: lecture et écriture en fin de fichier.
 
 #### Retour
-- Un entier `fd` correspondant au flux créé, `-1` sinon.
+- Un pointeur vers un objet `FILE` correspondant au flux créé, `NULL` sinon.
 
 ## `fclose`
 
-> `int close(int fd)`
+> `int fclose(FILE *stream)`
 
 ##### Fonction
 - Ferme un flux passé en argument.
 
 ##### Arguments
-- `int fd`: l'entier correspondant au flux.
+- `FILE *stream`: pointeur vers le dexcripteur de flux à fermer.
 
 ##### Retour
-- Un entier correspondant au statut, `-1` si une erreur s'est produite.
+- Un entier correspondant au statut, `0` si aucune erreur ne s'est produite. Dans le cas contraire, `errno` est mis à jour.
 
 ## `fwrite`
 

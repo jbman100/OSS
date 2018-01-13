@@ -27,8 +27,8 @@
     <span class="p">...</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">unAppelSysteme</span> <span class="p">(...)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
 	<span class="n">fprintf</span> <span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"%s:unAppelSysteme a planté: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
-	<span class="k">return</span> <span class="mi">1</span> <span class="p">;</span>		<span class="c1">// ou exit(1)
-</span>    <span class="p">}</span>
+	<span class="k">return</span> <span class="mi">1</span> <span class="p">;</span>		<span class="c1">// ou exit(1)</span>
+    <span class="p">}</span>
     <span class="p">...</span>
     <span class="k">return</span> <span class="mi">0</span> <span class="p">;</span>
 <span class="p">}</span>
@@ -42,23 +42,23 @@
 <p><strong>Les flux sont les entrées/sorties d'un programme</strong>. Ce sont des fichiers que le programme peut lire ou écrire, via le <code>kernel</code>. Comme sous UNIX, tout est un fichier, on peut ainsi écrire dans diverses choses: fichiers textes, terminaux, CD/DVD .. Il suffit de savoir quel fichier ouvrir. <strong>Chaque lecture ou écriture fait un appel système</strong>.</p>
 <h3>Utilisation des appels systèmes</h3>
 <p>Avec les appels systèmes classiques, <strong>un <code>int</code> nommé <code>fd</code> représente un flux</strong>. Les fonctions à savoir utiliser sont:</p>
-<pre lang=c><code><span class="highlight"><span class="c1">// Ouvrir un flux, renvoie un fd correspondant:
-</span><span class="kt">int</span> <span class="n">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
+<pre lang=c><code><span class="highlight"><span class="c1">// Ouvrir un flux, renvoie un fd correspondant:</span>
+<span class="kt">int</span> <span class="n">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
 
-<span class="c1">// Fermer le flux croorespondant à fd:
-</span><span class="kt">int</span> <span class="n">close</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">);</span>
+<span class="c1">// Fermer le flux croorespondant à fd:</span>
+<span class="kt">int</span> <span class="n">close</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">);</span>
 
-<span class="c1">// Ecrire dans le flux:
-</span><span class="kt">ssize_t</span> <span class="n">write</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
+<span class="c1">// Ecrire dans le flux:</span>
+<span class="kt">ssize_t</span> <span class="n">write</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
 
-<span class="c1">// Lire dans le flux:
-</span><span class="kt">ssize_t</span> <span class="n">read</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
+<span class="c1">// Lire dans le flux:</span>
+<span class="kt">ssize_t</span> <span class="n">read</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
 
-<span class="c1">// Se déplacer dans le flux:
-</span><span class="kt">off_t</span> <span class="n">lseek</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span>
+<span class="c1">// Se déplacer dans le flux:</span>
+<span class="kt">off_t</span> <span class="n">lseek</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span>
 
-<span class="c1">// Copier des flux:
-</span><span class="kt">int</span> <span class="n">dup</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">);</span>
+<span class="c1">// Copier des flux:</span>
+<span class="kt">int</span> <span class="n">dup</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">);</span>
 <span class="kt">int</span> <span class="n">dup2</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">newfd</span><span class="p">);</span>
 </span></code></pre>
 <p>Toutes ces fontions se trouvent dans <code>&lt;unistd.h&gt;</code>. Pour plus de détails sur ces fonctions, voir <a href="http://skutnik.iiens.net/cours/OSS/appels_systemes/fonctions.html">cette page</a>.</p>

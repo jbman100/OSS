@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+    <meta charset=utf-8>
+    <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/github_like.css">
+    <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/colors.css">
+    <link rel="shortcut icon" href="http://skutnik.iiens.net/icon.png" type="image/x-icon">
+    <title>spoutnik.com</title>
+</head>
+<h1>Fonctions systèmes</h1>
+<h2>Exécuter des programmes</h2>
+<h3>Méthode classique</h3>
+<blockquote>
+<p><code>int execve(const char *path, char *const argv[], char *const envp[])</code></p>
+</blockquote>
+<h5>Fonction</h5>
+<p>Exécute un programme annexe.</p>
+<h5>Arguments</h5>
+<ul>
+<li><code>const char *path</code>: le chemin vers le programme à exécuter;</li>
+<li><code>char *const argv[]</code>: les arguments à donner au programme;</li>
+<li><code>char *const envp[]</code>: l'environnement à donner au programme: des variables externes pouvant influer sur son comportement.</li>
+</ul>
+<h5>Retour</h5>
+<p><strong>Rien en cas de succès</strong>, <code>-1</code> sinon.</p>

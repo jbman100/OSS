@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<head>
+    <meta charset=utf-8>
+    <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/github_like.css">
+    <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/colors.css">
+    <link rel="shortcut icon" href="http://skutnik.iiens.net/icon.png" type="image/x-icon">
+    <title>spoutnik.com</title>
+</head>
+<p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
+<h1>Communication inter-processus</h1>
+<h2>Signaux</h2>
+<h3>Description</h3>
+<p>Les signaux sont des évènements que les processus peuvent s'envoyer. Selon le signal, le programme réagit de façon différente:</p>
+<ul>
+<li><code>Ign</code>: Il peut l'ignorer;</li>
+<li><code>Term</code>: Il peut se terminer;</li>
+<li><code>Core</code>: Il peut se terminer en sauvegardant son état;</li>
+<li><code>Stop</code>: Il peut s'endormir;</li>
+<li><code>Spe</code>: Il peut effectuer une action spéciale.</li>
+</ul>
+<p>Les différents signaux sont:</p>
+<table>
+<thead>
+<tr>
+<th>Nom</th>
+<th>Numéro</th>
+<th>Origine</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SIGHUP</code></td>
+<td>1</td>
+<td>Mort du terminal ou processus parent</td>
+<td><code>Term</code></td>
+</tr>
+<tr>
+<td><code>SIGINT</code></td>
+<td>2</td>
+<td>Interruption depuis le clavier</td>
+<td><code>Term</code></td>
+</tr>
+<tr>
+<td><code>SIGQUIT</code></td>
+<td>3</td>
+<td>Sortie depuis le clavier</td>
+<td><code>Core</code></td>
+</tr>
+<tr>
+<td><code>SIGILL</code></td>
+<td>4</td>
+<td>Instruction illégale</td>
+<td><code>Core</code></td>
+</tr>
+<tr>
+<td><code>SIGABRT</code></td>
+<td>6</td>
+<td>Signal arrêt depuis <code>abort(3)</code></td>
+<td><code>Core</code></td>
+</tr>
+<tr>
+<td><code>SIGBUS</code></td>
+<td>7</td>
+<td>Erreur de bus (mauvais accès mémoire)</td>
+<td><code>Core</code></td>
+</tr>
+<tr>
+<td><code>SIGFPE</code></td>
+<td>8</td>
+<td>Exeception <code>float</code> (?)</td>
+<td><code>Core</code></td>
+</tr>
+<tr>
+<td><code>SIGKILL</code></td>
+<td>9</td>
+<td><strong>Signal de KILL</strong></td>
+<td><code>Term</code></td>
+</tr>
+<tr>
+<td><code>SIGSEGV</code></td>
+<td>11</td>
+<td>Erreur de segmentation</td>
+<td><code>Core</code></td>
+</tr>
+<tr>
+<td><code>SIGPIPE</code></td>
+<td>13</td>
+<td><code>pipe</code> cassée ou invalide</td>
+<td><code>Term</code></td>
+</tr>
+<tr>
+<td><code>SIGALRM</code></td>
+<td>14</td>
+<td>Signal de <code>alarm(2)</code></td>
+<td><code>Term</code></td>
+</tr>
+<tr>
+<td><code>SIGTERM</code></td>
+<td>15</td>
+<td>Signal de terminaison</td>
+<td><code>Term</code></td>
+</tr>
+<tr>
+<td><code>SIGUSR1</code></td>
+<td>10</td>
+<td>Signal utilisateur 1</td>
+<td><code>Term</code></td>
+</tr>
+<tr>
+<td><code>SIGUSR2</code></td>
+<td>12</td>
+<td>Signal utilisateur 2</td>
+<td><code>Term</code></td>
+</tr>
+<tr>
+<td><code>SIGCHLD</code></td>
+<td>17</td>
+<td>Enfant mort ou arrêté</td>
+<td><code>Ign</code></td>
+</tr>
+<tr>
+<td><code>SIGCONT</code></td>
+<td>18</td>
+<td>Signal de redémarrage</td>
+<td><code>Cont</code></td>
+</tr>
+<tr>
+<td><code>SIGSTOP</code></td>
+<td>19</td>
+<td><strong>Signal d'arrêt</strong></td>
+<td><code>Stop</code></td>
+</tr>
+<tr>
+<td><code>SIGTSTP</code></td>
+<td>20</td>
+<td>Stop écrit en <code>tty</code></td>
+<td><code>Stop</code></td>
+</tr>
+<tr>
+<td><code>SIGTTIN</code></td>
+<td>21</td>
+<td>Entrée <code>tty</code> pour processus en arrière plan</td>
+<td><code>Stop</code></td>
+</tr>
+<tr>
+<td><code>SIGTTOU</code></td>
+<td>22</td>
+<td>Sortie <code>tty</code> pour processus en arrière plan</td>
+<td><code>Stop</code></td>
+</tr></tbody></table>
+<p>Pas besoin de tout apprendre, les plus importants sont en gras. <strong>Les signaux <code>SIGKILL</code> et <code>SIGSTOP</code> ne peuvent être arrêtés, bloqués, ou ignorés</strong>.</p>
+<p>L'envoi d'un signal est quasi instantané. Sa réception est elle plus hasardeuse: le programme écoute les signaux à ceratains moments de son exécution et peut mettre du temps à le reçevoir.</p>
+<h3>Utilisation</h3>
+<h2><code>kill</code></h2>
+<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">kill</span><span class="p">(</span><span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sig</span><span class="p">);</span>
+</span></code></pre>
+<h5>Fonction</h5>
+<ul>
+<li>Envoie le signal <code>sig</code> au processus de PID <code>pid</code>.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>pid_t pid</code>: un PID;</li>
+<li><code>int sig</code> Un entier correspondant à un signal.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li>Rien en cas de succès, <code>-1</code> en cas d'échec. <code>errno</code> est mis à jour.</li>
+</ul>
+<h2><code>signal</code></h2>
+<pre lang=c><code><span class="highlight"><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">signal</span><span class="p">(</span><span class="kt">int</span> <span class="n">sig</span><span class="p">,</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">func</span><span class="p">)(</span><span class="kt">int</span><span class="p">)))(</span><span class="kt">int</span><span class="p">);</span>
+</span></code></pre>
+<h5>Fonction</h5>
+<ul>
+<li>Associe au signal <code>sig</code> l'action <code>void (*func)(int))</code>. Cet argument <strong>infect</strong> est en fait un pointeur vers une fonction, qui sera appelée lors de la réception du signal.</li>
+<li>En donnant <code>SIG_IGN</code> en tant que deuxième argument, le signal sera ignoré;</li>
+<li>En donnant <code>SIG_DFL</code> en tant que deuxième argument, le signal sera géré comme par défaut.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>int sig</code> Un entier correspondant à un signal;</li>
+<li><code>void (*func)(int)</code>: Un pointeur vers une fonction.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li>Le gestionnaire précédent en cas de succès, <code>SIG_ERR</code> en cas d'échec. <code>errno</code> est mis à jour.</li>
+</ul>
+<h5>Exemple</h5>
+<pre lang=c><code><span class="highlight"><span class="kt">void</span> <span class="nf">terminator</span><span class="p">(</span><span class="kt">int</span> <span class="n">signo</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"RECEIVED SIGPIPE</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">signo</span> <span class="o">!=</span> <span class="n">SIGPIPE</span><span class="p">)</span> <span class="c1">// Dans le cas où il y a eu une c*uille;</span>
+	<span class="k">return</span><span class="p">;</span>
+    
+    <span class="cm">/* Actions à faire dans ce cas */</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+
+<span class="c1">// Dans le main</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">terminator</span><span class="p">)</span> <span class="o">==</span> <span class="n">SIG_ERR</span><span class="p">)</span> <span class="c1">// Teste le résultat de signal</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Il y a eu une erreur</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+</span></code></pre>
