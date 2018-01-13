@@ -8,9 +8,8 @@
 </head>
 <p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
 <h2><code>fopen</code></h2>
-<blockquote>
-<p><code>FILE *fopen(const char *pathname, const char *mode)</code></p>
-</blockquote>
+<pre lang=c><code><span class="highlight"><span class="kt">FILE</span> <span class="o">*</span><span class="n">fopen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">mode</span><span class="p">);</span>
+</span></code></pre>
 <h5>Fonction</h5>
 <ul>
 <li>Ouvre un flux vers le fichier passé en argument. Les modes <code>w</code>, <code>w+</code>, <code>a</code> et <code>a+</code> créent le fichier s'il n'existe pas.</li>
@@ -34,9 +33,8 @@
 <li>Un pointeur vers un objet <code>FILE</code> correspondant au flux créé, <code>NULL</code> sinon.</li>
 </ul>
 <h2><code>fclose</code></h2>
-<blockquote>
-<p><code>int fclose(FILE *stream)</code></p>
-</blockquote>
+<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">fclose</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+</span></code></pre>
 <h5>Fonction</h5>
 <ul>
 <li>Ferme un flux passé en argument.</li>
@@ -50,53 +48,52 @@
 <li>Un entier correspondant au statut, <code>0</code> si aucune erreur ne s'est produite. Dans le cas contraire, <code>errno</code> est mis à jour.</li>
 </ul>
 <h2><code>fwrite</code></h2>
-<blockquote>
-<p><code>ssize_t write(int fd, const void *buf, size_t count)</code></p>
-</blockquote>
+<pre lang=c><code><span class="highlight"><span class="kt">size_t</span> <span class="n">fwrite</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nmemb</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+</span></code></pre>
 <h5>Fonction</h5>
 <ul>
-<li>Écrit dans un flux passé en argument.</li>
+<li>Écrit dans le flux correspondant à <code>stream</code> <code>nmemb</code> éléments de taille <code>size</code> bytes, lus dans <code>ptr</code>.</li>
 </ul>
 <h5>Arguments</h5>
 <ul>
-<li><code>int fd</code>: l'entier correspondant au flux;</li>
-<li><code>const void *buf</code>: un pointeur vers la mémoire à écrire dans le fichier;</li>
-<li><code>size_t count</code>: la taille de la mémoire à écrire.</li>
+<li><code>const void *ptr</code>: La zone de mémoire à lire;</li>
+<li><code>size_t size</code>: La taille des éléments à copier;</li>
+<li><code>size_t nmemb</code>: Le nombre d'éléments à copier;</li>
+<li><code>FILE *stream</code>: Le flux où écrire.</li>
 </ul>
 <h5>Retour</h5>
 <ul>
-<li>Un entier correspondant au nombre de bytes écrits, <code>-1</code> si une erreur s'est produite.</li>
+<li>Un entier correspondant au nombre de bytes écrits, <code>0</code> si une erreur s'est produite.</li>
 </ul>
 <h2><code>fread</code></h2>
-<blockquote>
-<p><code>ssize_t read(int fd, void *buf, size_t count)</code></p>
-</blockquote>
+<pre lang=c><code><span class="highlight"><span class="kt">size_t</span> <span class="n">fread</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nmemb</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+</span></code></pre>
 <h5>Fonction</h5>
 <ul>
-<li>Lit dans le flux correpondant à <code>fd</code> <code>count</code> bytes, et les stocke dans <code>buf</code>.</li>
+<li>Lit dans le flux correpondant à <code>stream</code> <code>nmemb</code> éléments de taille <code>size</code> bytes, et les stocke dans <code>ptr</code>.</li>
 </ul>
 <h5>Arguments</h5>
 <ul>
-<li><code>int fd</code>: le descripteur de flux;</li>
-<li><code>void *buf</code>: un pointeur vers la zone mémoire où stocker les infos lues;</li>
-<li><code>size_t count</code>: la taille de la mémoire à lire.</li>
+<li><code>void *ptr</code>: La zone mémoire de destination;</li>
+<li><code>size_t size</code>: La taille des éléments à lire;</li>
+<li><code>size_t nmemb</code>: Le nombre d'éléments à copier;</li>
+<li><code>FILE *stream</code>: Le flux où lire.</li>
 </ul>
 <h5>Retour</h5>
 <ul>
-<li>Un entier correspondant à la taille de la mémoire lue, et <code>-1</code> si une erreur s'est produite.</li>
+<li>Un entier correspondant à la taille de la mémoire lue, et <code>0</code> si une erreur s'est produite.</li>
 </ul>
 <h2><code>fseek</code></h2>
-<blockquote>
-<p><code>off_t lseek(int fd, off_t offset, int whence)</code></p>
-</blockquote>
+<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">fseek</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">,</span> <span class="kt">long</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span>
+</span></code></pre>
 <h5>Fonction</h5>
 <ul>
-<li>Repositionne dans le flux correpondant à <code>fd</code> de <code>offset</code> par rapport à <code>whence</code>: si <code>whence</code> est <code>SEEK_END</code> et <code>offset</code> est <code>0</code>, il va à <code>0</code> <code>bytes</code> de la fin.</li>
+<li>Repositionne dans le flux correpondant à <code>stream</code> de <code>offset</code> par rapport à <code>whence</code>: si <code>whence</code> est <code>SEEK_END</code> et <code>offset</code> est <code>0</code>, il va à <code>0</code> <code>bytes</code> de la fin.</li>
 </ul>
 <h5>Arguments</h5>
 <ul>
-<li><code>int fd</code>: le descripteur de flux;</li>
-<li><code>off_t offset</code>: Le décalage depuis <code>whence</code>;</li>
+<li><code>FILE *stream</code>: le descripteur de flux;</li>
+<li><code>long offset</code>: Le décalage depuis <code>whence</code>;</li>
 <li><code>int whence</code>: un entier spécial défini dans un <code>enum</code>, pouvant être:
 <ul>
 <li><code>SEEK_SET</code>: Depuis le début;</li>
@@ -107,25 +104,20 @@
 </ul>
 <h5>Retour</h5>
 <ul>
-<li>Un entier correspondant à la position du curseur dans le fichier, et <code>-1</code> si une erreur s'est produite.</li>
+<li><code>0</code> si tout s'est bien passé et <code>-1</code> si une erreur s'est produite. <code>errno</code> est mis à jour.</li>
 </ul>
-<h2><code>dup</code> et <code>dup2</code></h2>
-<blockquote>
-<p><code>int dup(int oldfd)</code></p>
-</blockquote>
-<blockquote>
-<p><code>int dup2(int oldfd, int newfd)</code></p>
-</blockquote>
+<h2><code>ftell</code></h2>
+<pre lang=c><code><span class="highlight"><span class="kt">long</span> <span class="n">ftell</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+</span></code></pre>
 <h5>Fonction</h5>
 <ul>
-<li>Copie les flux. <code>dup</code> crée un nouveau <code>fd</code> qui pointe vers le même flux que <code>oldfd</code>, alors que <code>dup2</code> ferme <code>newfd</code> et le fait pointer vers le même flux que <code>oldfd</code>.</li>
+<li>Donne la position du curseur dans le flux <code>stream</code>.</li>
 </ul>
 <h5>Arguments</h5>
 <ul>
-<li><code>int oldfd</code>: le descripteur de flux à copier;</li>
-<li><code>int newfd</code>: le flux à écraser et faire pointer vers <code>oldfd</code>.</li>
+<li><code>FILE *stream</code>: Le flux à considérer.</li>
 </ul>
 <h5>Retour</h5>
 <ul>
-<li>Un entier correspondant au <code>fd</code> créé, et <code>-1</code> si une erreur s'est produite.</li>
+<li>Un <code>long</code> correspondant à la position du curseur dans le fichier et <code>-1</code> si une erreur s'est produite. <code>errno</code> est mis à jour.</li>
 </ul>

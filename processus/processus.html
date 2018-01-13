@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+    <meta charset=utf-8>
+    <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/github_like.css">
+    <link rel="stylesheet" type="text/css" href="http://skutnik.iiens.net/colors.css">
+    <link rel="shortcut icon" href="http://skutnik.iiens.net/icon.png" type="image/x-icon">
+    <title>spoutnik.com</title>
+</head>
+<p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
+<h1>Processus</h1>
+<p>Il existe plusieurs méthodes pour créer des processus. On peut créer des processus lourds, copies complètes des processus les ayant créés, ou des processus légers, partageant des éléments avec le père.</p>
+<h2>Processus lourd - <code>fork</code></h2>
+<pre lang=c><code><span class="highlight"><span class="n">pid_t</span> <span class="n">fork</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span></code></pre>
+<h5>Fonction</h5>
+<ul>
+<li><code>fork</code> crée un nouveau processus en clonant le processus qui l'utilise. Le nouveau processus est le processus fils.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li><strong>Retourne <code>0</code> dans le processus fils</strong>.</li>
+<li><strong>Retourne le PID du fils dans le processus père</strong>.</li>
+<li>Retourne <code>-1</code> en cas d'échec. <code>errno</code> est mis à jour.</li>
+</ul>

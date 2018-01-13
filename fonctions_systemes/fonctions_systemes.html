@@ -9,11 +9,12 @@
 <h1>Fonctions systèmes</h1>
 <h2>Exécuter des programmes</h2>
 <h3>Méthode classique</h3>
-<blockquote>
-<p><code>int execve(const char *path, char *const argv[], char *const envp[])</code></p>
-</blockquote>
+<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">execve</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">argv</span><span class="p">[],</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">envp</span><span class="p">[])</span>
+</span></code></pre>
 <h5>Fonction</h5>
-<p>Exécute un programme annexe.</p>
+<ul>
+<li>Exécute un programme annexe.</li>
+</ul>
 <h5>Arguments</h5>
 <ul>
 <li><code>const char *path</code>: le chemin vers le programme à exécuter;</li>
@@ -21,4 +22,21 @@
 <li><code>char *const envp[]</code>: l'environnement à donner au programme: des variables externes pouvant influer sur son comportement.</li>
 </ul>
 <h5>Retour</h5>
-<p><strong>Rien en cas de succès</strong>, <code>-1</code> sinon.</p>
+<ul>
+<li><strong>Rien en cas de succès</strong>, <code>-1</code> sinon.</li>
+</ul>
+<h2>Quitter</h2>
+<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">_exit</span><span class="p">(</span><span class="kt">int</span> <span class="n">status</span><span class="p">);</span>
+</span></code></pre>
+<h5>Fonction</h5>
+<ul>
+<li>Libère la mémoire allouée, envoie les signaux adéquats et termine le processus en renvoyant le statut <code>status</code>.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>int status</code>: le statut à renvoyer. Il est de bon goût d'utiliser les status <code>EXIT_SUCCESS</code> et <code>EXIT_FAILURE</code>, définis en fonction du système.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li>Rien.</li>
+</ul>

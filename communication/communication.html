@@ -8,7 +8,12 @@
 </head>
 <p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
 <h1>Communication inter-processus</h1>
-<h2>Signaux</h2>
+<h2>Sommaire</h2>
+<ol>
+<li><a href="#signaux">Signaux</a></li>
+<li><a href="#fifo">FIFO</a></li>
+</ol>
+<h2><a name="signaux"></a>Signaux</h2>
 <h3>Description</h3>
 <p>Les signaux sont des évènements que les processus peuvent s'envoyer. Selon le signal, le programme réagit de façon différente:</p>
 <ul>
@@ -151,6 +156,9 @@
 </tr></tbody></table>
 <p>Pas besoin de tout apprendre, les plus importants sont en gras. <strong>Les signaux <code>SIGKILL</code> et <code>SIGSTOP</code> ne peuvent être arrêtés, bloqués, ou ignorés</strong>.</p>
 <p>L'envoi d'un signal est quasi instantané. Sa réception est elle plus hasardeuse: le programme écoute les signaux à ceratains moments de son exécution et peut mettre du temps à le reçevoir.</p>
+<ul>
+<li><strong>De façon peu intuitive, <code>kill</code> envoie un signal, et <code>signal</code> reçoit un signal</strong>.</li>
+</ul>
 <h3>Utilisation</h3>
 <h2><code>kill</code></h2>
 <pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">kill</span><span class="p">(</span><span class="n">pid_t</span> <span class="n">pid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sig</span><span class="p">);</span>
@@ -197,10 +205,49 @@
     <span class="p">...</span>
 <span class="p">}</span>
 
-
 <span class="c1">// Dans le main</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="n">signal</span><span class="p">(</span><span class="n">SIGPIPE</span><span class="p">,</span> <span class="n">terminator</span><span class="p">)</span> <span class="o">==</span> <span class="n">SIG_ERR</span><span class="p">)</span> <span class="c1">// Teste le résultat de signal</span>
     <span class="n">printf</span><span class="p">(</span><span class="s">"Il y a eu une erreur</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-
+<span class="k">else</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"terminator sera lancé lorsque SIGPIPE sera reçu</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
 </span></code></pre>
+<h2><code>pause</code></h2>
+<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">pause</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span></code></pre>
+<h5>Fonction</h5>
+<ul>
+<li>Pause le programme jusqu'à la réception d'un signal non ignoré.</li>
+</ul>
+<h2><a name="fifo"></a>Les <strong><code>FIFO</code></strong></h2>
+<h3>Description</h3>
+<p><code>FIFO</code> vient de 'first in first out'. C'est un modèle de file: <strong>il faut le voir comme un tuyau</strong>. Un <code>FIFO</code> à un sens: <strong>les informations rentrent du coté des 'écrivains' et sortent du coté des 'lecteurs'</strong>. Il existe une taille maximale: une fois atteinte, les écrivains ne peuvent rien mettre tant que les lecteurs ne lisent pas les informations.</p>
+<p><strong>On s'intéresse ici au <code>pipe</code></strong>, un type de <code>FIFO</code>. Elle permet de partager des données avec d'autres processus qui ont eux aussi ouvert le <code>pipe</code>.</p>
+<ul>
+<li>Il existe deux types de <code>pipe</code>: les <code>pipe</code> nommés, pouvant connecter divers processus, et les <code>pipe</code> anonymes, connectant uniquement des processus apparentés.
+<ul>
+<li>Les <code>pipe</code> nommés sont créés avec la commande <code>mkfifo</code>, <strong>hors du programme</strong>.</li>
+<li>Les <code>pipe</code> anonymes sont créés avec la fonction <code>pipe</code> de <code>&lt;unistd.h&gt;</code>.</li>
+</ul>
+</li>
+<li>Le <code>pipe</code> s'ouvre comme un flux classique.</li>
+<li>Les lecteurs sont bloqués losque la <code>pipe</code> est vide.</li>
+<li>Les écrivains sont bloqués losque la <code>pipe</code> est pleine.</li>
+<li><strong>Si on essaye d'écrire dans une <code>pipe</code> sans lecteur, on reçoit un <code>SIGPIPE</code></strong>. C'est un bon moyen de savoir si un autre programme est arrêté: il faut par contre mettre à jour le gestionnaire de <code>SIGPIPE</code> car il a pour effet de terminer le processus.</li>
+</ul>
+<p>Une fois ouvert, <strong>on lit et écrit au <code>pipe</code> comme un flux classique</strong>.</p>
+<h2><code>pipe</code></h2>
+<pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">pipe</span><span class="p">(</span><span class="kt">int</span> <span class="n">fildes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></code></pre>
+<h5>Fonction</h5>
+<ul>
+<li>Crée un <code>pipe</code>: met dans <code>fildes[0]</code> le fd de la sortie et dans <code>fildes[1]</code> le fd de l'entrée.</li>
+</ul>
+<h5>Arguments</h5>
+<ul>
+<li><code>int fildes[2]</code>: Un tableau d'<code>int</code> de taille <code>2</code>.</li>
+</ul>
+<h5>Retour</h5>
+<ul>
+<li><code>0</code> si tout s'est bien passé; <code>-1</code> sinon et <code>errno</code> est mis à jour.</li>
+</ul>
