@@ -8,7 +8,8 @@
     <title>spoutnik.com</title>
 </head>
 <p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
-<h2><code>open</code></h2>
+<h2></h2>
+<h3><code>open</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -33,7 +34,8 @@
 <ul>
 <li>Un entier <code>fd</code> correspondant au flux créé, <code>-1</code> sinon.</li>
 </ul>
-<h2><code>close</code></h2>
+<h2></h2>
+<h3><code>close</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">close</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -48,7 +50,8 @@
 <ul>
 <li>Un entier correspondant au statut, <code>-1</code> si une erreur s'est produite.</li>
 </ul>
-<h2><code>write</code></h2>
+<h2></h2>
+<h3><code>write</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">ssize_t</span> <span class="n">write</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -65,7 +68,8 @@
 <ul>
 <li>Un entier correspondant au nombre de bytes écrits, <code>-1</code> si une erreur s'est produite.</li>
 </ul>
-<h2><code>read</code></h2>
+<h2></h2>
+<h3><code>read</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">ssize_t</span> <span class="n">read</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">count</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -82,7 +86,8 @@
 <ul>
 <li>Un entier correspondant à la taille de la mémoire lue, et <code>-1</code> si une erreur s'est produite.</li>
 </ul>
-<h2><code>lseek</code></h2>
+<h2></h2>
+<h3><code>lseek</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">off_t</span> <span class="n">lseek</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -105,7 +110,8 @@
 <ul>
 <li>Un entier correspondant à la position du curseur dans le fichier, et <code>-1</code> si une erreur s'est produite.</li>
 </ul>
-<h2><code>dup</code> et <code>dup2</code></h2>
+<h2></h2>
+<h3><code>dup</code> et <code>dup2</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">dup</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">)</span>
 </span></code></pre>
 <pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">dup2</span><span class="p">(</span><span class="kt">int</span> <span class="n">oldfd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">newfd</span><span class="p">);</span>

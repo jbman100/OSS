@@ -8,7 +8,8 @@
     <title>spoutnik.com</title>
 </head>
 <p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
-<h2><code>fopen</code></h2>
+<h2></h2>
+<h3><code>fopen</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">FILE</span> <span class="o">*</span><span class="n">fopen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">mode</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -33,7 +34,8 @@
 <ul>
 <li>Un pointeur vers un objet <code>FILE</code> correspondant au flux créé, <code>NULL</code> sinon.</li>
 </ul>
-<h2><code>fclose</code></h2>
+<h2></h2>
+<h3><code>fclose</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">fclose</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -48,7 +50,8 @@
 <ul>
 <li>Un entier correspondant au statut, <code>0</code> si aucune erreur ne s'est produite. Dans le cas contraire, <code>errno</code> est mis à jour.</li>
 </ul>
-<h2><code>fwrite</code></h2>
+<h2></h2>
+<h3><code>fwrite</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">size_t</span> <span class="n">fwrite</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nmemb</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -66,7 +69,8 @@
 <ul>
 <li>Un entier correspondant au nombre de bytes écrits, <code>0</code> si une erreur s'est produite.</li>
 </ul>
-<h2><code>fread</code></h2>
+<h2></h2>
+<h3><code>fread</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">size_t</span> <span class="n">fread</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nmemb</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -84,7 +88,8 @@
 <ul>
 <li>Un entier correspondant à la taille de la mémoire lue, et <code>0</code> si une erreur s'est produite.</li>
 </ul>
-<h2><code>fseek</code></h2>
+<h2></h2>
+<h3><code>fseek</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">int</span> <span class="n">fseek</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">,</span> <span class="kt">long</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">whence</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -107,7 +112,8 @@
 <ul>
 <li><code>0</code> si tout s'est bien passé et <code>-1</code> si une erreur s'est produite. <code>errno</code> est mis à jour.</li>
 </ul>
-<h2><code>ftell</code></h2>
+<h2></h2>
+<h3><code>ftell</code></h3>
 <pre lang=c><code><span class="highlight"><span class="kt">long</span> <span class="n">ftell</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>

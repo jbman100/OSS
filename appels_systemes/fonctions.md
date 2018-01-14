@@ -1,6 +1,8 @@
 <a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a>
 
-## `open`
+##
+
+### `open`
 
 ```c
 int open(const char *pathname, int flags);
@@ -22,7 +24,9 @@ int open(const char *pathname, int flags);
 #### Retour
 - Un entier `fd` correspondant au flux créé, `-1` sinon.
 
-## `close`
+##
+
+### `close`
 
 ```c
 int close(int fd);
@@ -37,7 +41,9 @@ int close(int fd);
 ##### Retour
 - Un entier correspondant au statut, `-1` si une erreur s'est produite.
 
-## `write`
+##
+
+### `write`
 
 ```c
 ssize_t write(int fd, const void *buf, size_t count);
@@ -54,7 +60,9 @@ ssize_t write(int fd, const void *buf, size_t count);
 ##### Retour
 - Un entier correspondant au nombre de bytes écrits, `-1` si une erreur s'est produite.
 
-## `read`
+##
+
+### `read`
 
 ```c
 ssize_t read(int fd, void *buf, size_t count);
@@ -71,7 +79,9 @@ ssize_t read(int fd, void *buf, size_t count);
 ##### Retour
 - Un entier correspondant à la taille de la mémoire lue, et `-1` si une erreur s'est produite.
 
-## `lseek`
+##
+
+### `lseek`
 
 ```c
 off_t lseek(int fd, off_t offset, int whence);
@@ -91,7 +101,9 @@ off_t lseek(int fd, off_t offset, int whence);
 ##### Retour
 - Un entier correspondant à la position du curseur dans le fichier, et `-1` si une erreur s'est produite.
 
-## `dup` et `dup2`
+##
+
+### `dup` et `dup2`
 
 ```c
 int dup(int oldfd)

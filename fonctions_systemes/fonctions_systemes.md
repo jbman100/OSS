@@ -1,3 +1,5 @@
+<a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a>
+
 # Fonctions systèmes
 
 ## Exécuter des programmes

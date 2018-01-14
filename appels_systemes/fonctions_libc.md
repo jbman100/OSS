@@ -1,6 +1,8 @@
 <a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a>
 
-## `fopen`
+## 
+
+### `fopen`
 
 ```c
 FILE *fopen(const char *pathname, const char *mode);
@@ -22,7 +24,9 @@ FILE *fopen(const char *pathname, const char *mode);
 #### Retour
 - Un pointeur vers un objet `FILE` correspondant au flux créé, `NULL` sinon.
 
-## `fclose`
+## 
+
+### `fclose`
 
 ```c
 int fclose(FILE *stream);
@@ -37,7 +41,9 @@ int fclose(FILE *stream);
 ##### Retour
 - Un entier correspondant au statut, `0` si aucune erreur ne s'est produite. Dans le cas contraire, `errno` est mis à jour.
 
-## `fwrite`
+## 
+
+### `fwrite`
 
 ```c
 size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
@@ -55,7 +61,9 @@ size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
 ##### Retour
 - Un entier correspondant au nombre de bytes écrits, `0` si une erreur s'est produite.
 
-## `fread`
+## 
+
+### `fread`
 
 ```c
 size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
@@ -73,7 +81,9 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
 ##### Retour
 - Un entier correspondant à la taille de la mémoire lue, et `0` si une erreur s'est produite.
 
-## `fseek`
+## 
+
+### `fseek`
 
 ```c
 int fseek(FILE *stream, long offset, int whence);
@@ -93,7 +103,9 @@ int fseek(FILE *stream, long offset, int whence);
 ##### Retour
 - `0` si tout s'est bien passé et `-1` si une erreur s'est produite. `errno` est mis à jour.
 
-## `ftell`
+## 
+
+### `ftell`
 
 ```c
 long ftell(FILE *stream);

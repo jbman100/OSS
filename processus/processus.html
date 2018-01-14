@@ -9,8 +9,12 @@
 </head>
 <p><a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a></p>
 <h1>Processus</h1>
-<p>Il existe plusieurs méthodes pour créer des processus. On peut créer des processus lourds, copies complètes des processus les ayant créés, ou des processus légers, partageant des éléments avec le père.</p>
-<h2>Processus lourd - <code>fork</code></h2>
+<h2>Processus UNIX</h2>
+<ul>
+<li>Il existe plusieurs méthodes pour créer des processus. On peut créer des processus lourds, copies complètes des processus les ayant créés, ou des processus légers, partageant des éléments avec le père.</li>
+<li>Il faut bien comprendre que <strong>dès l'appel de la fonction de clonage, il existe deux processus. La seule différence est le retour de cette fonction</strong>: c'est comme ça que l'on distingue le père du fils.</li>
+</ul>
+<h3>Processus lourd - <code>fork</code></h3>
 <pre lang=c><code><span class="highlight"><span class="n">pid_t</span> <span class="n">fork</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 </span></code></pre>
 <h5>Fonction</h5>
@@ -23,3 +27,5 @@
 <li><strong>Retourne le PID du fils dans le processus père</strong>.</li>
 <li>Retourne <code>-1</code> en cas d'échec. <code>errno</code> est mis à jour.</li>
 </ul>
+<h3>Processus léger</h3>
+<p>Il n'existe apparemment pas de moyens de les créer. le cours conseille de le faire en assembleur.</p>
