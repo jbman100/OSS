@@ -1,4 +1,4 @@
-<a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a>
+<a href="http://skutnik.iiens.net/cours/1A/OSS">Retour au sommaire</a>
 
 # Appels systèmes et flux
 
@@ -69,7 +69,7 @@ int dup(int oldfd);
 int dup2(int oldfd, int newfd);
 ```
 
-Toutes ces fontions se trouvent dans `<unistd.h>`. Pour plus de détails sur ces fonctions, voir <a href="http://skutnik.iiens.net/cours/OSS/appels_systemes/fonctions.html">cette page</a>.
+Toutes ces fontions se trouvent dans `<unistd.h>`. Pour plus de détails sur ces fonctions, voir <a href="http://skutnik.iiens.net/cours/1A/OSS/appels_systemes/fonctions.html">cette page</a>.
 
 __L'utiliisation de flux classiques utilise ses propres concepts__:
 

@@ -1,4 +1,4 @@
-<a href="http://skutnik.iiens.net/cours/OSS">Retour au sommaire</a>
+<a href="http://skutnik.iiens.net/cours/1A/OSS">Retour au sommaire</a>
 
 ## Commandes basiques
 
